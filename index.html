@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KER☻SENE — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#f7f7f7; --void:#0a0a0a; --wire:#222;
+      --blue:#7fb2ff; --green:#59ff87; --dx:0; --dy:0;
+      --doc-h:100%;
+      --ah: 48deg; --as: 100%; --al: 55%;
+      --accent: hsl(var(--ah), var(--as), var(--al));
+      --k-yellow:#ffbf02;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; min-height:100%; overflow-x:hidden;}
+    body{
+      margin:0; background:radial-gradient(1200px 700px at 50% 10%, #111, var(--void)); color:var(--ink);
+      font-family:VT323, ui-monospace, Menlo, Consolas, monospace; letter-spacing:.25px; line-height:1.28;
+      filter:contrast(1.08) saturate(1.1);
+      cursor:auto;
+    }
+
+    /* Emoticon overlay */
+    .crt-cover{
+      position:absolute; left:0; top:0; width:100%; height:var(--doc-h);
+      pointer-events:none; z-index:100; opacity:.22; color: var(--accent);
+      background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'><rect fill='none' width='600' height='600'/><g font-family='VT323' font-size='64' fill='currentColor' opacity='0.85'><text x='30' y='80'>☻ ☺︎ ☹︎ ツ シ ( •‿• ) ( ◕‿◕ ) ×_×</text><text x='320' y='160'>ツ ☻ :-] ( ◕‿◕ ) ☹︎ ☺︎ ツ ×_×</text><text x='80' y='260'>シ ☻ ☺︎ ( •‿• ) ツ :-) :-] ×_×</text><text x='360' y='340'>☻ ツ ☹︎ ( ◕‿◕ ) シ ☺︎ ☻</text><text x='40' y='420'>:-) ×_× ☻ ☺︎ ツ シ :-]</text><text x='260' y='520'>☹︎ ツ ( •‿◕ ) ☻ :-) ☺︎</text></g></svg>");
+      background-size:600px 600px;
+      animation:smileDrift 60s linear infinite;
+      filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 60%, transparent))
+              drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 35%, transparent));
+      mix-blend-mode:screen;
+    }
+    @keyframes smileDrift{ to{ background-position: -600px -600px; } }
+
+    /* TV static */
+    .tv-static{
+      position:absolute; left:0; top:0; width:100%; height:var(--doc-h);
+      z-index:110; pointer-events:none; opacity:.28; mix-blend-mode:screen; image-rendering:pixelated;
+      filter: drop-shadow(0 0 6px rgba(130,180,255,.22)) drop-shadow(0 0 14px rgba(120,180,255,.16));
+    }
+    @media (prefers-reduced-motion: reduce){ .tv-static{ display:none } }
+
+    /* Layout / Header */
+    .wrap{position:relative; z-index:3000; max-width:1200px; margin:0 auto; padding:18px; overflow-x:hidden;}
+    header{
+      position:sticky; top:0; z-index:5000;
+      background:rgba(0,0,0,.6); backdrop-filter:blur(3px); border-bottom:2px dashed #2a2a2a
+    }
+    .nav{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center; gap:12px;
+    }
+
+    /* BIGGER LOGO (lowered baseline) */
+    .logo{justify-self:center; font-size:68px; letter-spacing:1px; color:var(--accent); position:relative; top:6px;}
+
+    .right{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
+    .links a{color:#e8e8e8; text-decoration:none; margin-left:14px; font-size:18px; border-bottom:1px dotted transparent}
+    .links a:hover{border-bottom-color:var(--accent)}
+
+    /* BIGGER NOW FILMING TICKER */
+    .rec-ticker{
+      display:flex; align-items:center; gap:12px;
+      padding:8px 12px; border:1px dashed #3a3a3a; border-radius:8px;
+      background: rgba(13,13,13,.75); color: var(--ink);
+      font-family: VT323, ui-monospace, monospace; user-select:none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.45);
+    }
+    .rec-ticker .label{ color:var(--accent); font-size:20px; letter-spacing:.5px }
+    .rec-ticker .tc{ font-size:26px; letter-spacing:1.5px }
+    .rec-ticker .lamp{
+      width:14px; height:14px; border-radius:50%; background:#ff3b3b;
+      box-shadow:0 0 10px rgba(255,59,59,.95), 0 0 18px rgba(255,59,59,.6);
+      animation:recPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes recPulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.25);opacity:1}}
+
+    /* Channel switcher */
+    .vhs-remote{
+      background:#0d0d0d; color:#eee; border:1px dashed #3a3a3a;
+      padding:8px; border-radius:8px; width:168px; user-select:none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.45);
+      font-family: VT323, ui-monospace, monospace;
+      margin-right:-10px; /* nudge right */
+    }
+    .vhs-remote h4{ margin:0 0 6px; font-size:18px; letter-spacing:.5px; color:var(--accent); text-align:center; }
+    .vhs-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    .vhs-btn{
+      background:#151515; color:#eaeaea; border:1px solid #2b2b2b; border-radius:6px;
+      padding:6px 8px; font-size:16px; text-align:center; cursor:pointer;
+    }
+    .vhs-btn:hover{ border-color:var(--accent); }
+    .vhs-btn.active{ border-color:var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+
+    .vhs-flick{
+      position:fixed; inset:0; pointer-events:none; z-index:4999; opacity:0;
+      background:
+        radial-gradient(80% 80% at 50% 50%, rgba(255,255,255,.12), rgba(0,0,0,.85) 70%),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.04) 0 2px, rgba(0,0,0,.06) 3px, rgba(0,0,0,.14) 6px);
+      mix-blend-mode:screen;
+    }
+    .switching .vhs-flick{ animation: flicker .22s ease; }
+    @keyframes flicker{ 0%{opacity:0} 12%{opacity:.75} 45%{opacity:.2} 100%{opacity:0} }
+
+    /* Element-local glitch */
+    .glitchable{ position:relative; }
+    .glitch-hit{
+      transform: translate(var(--gx,0), var(--gy,0)) skewX(var(--gskew,.15deg));
+      transition: transform 60ms linear, filter 120ms ease;
+      will-change: transform, filter;
+      filter: contrast(1.05) saturate(1.05) hue-rotate(var(--ghue,0deg));
+    }
+    .glitch-text.glitch-hit{
+      text-shadow:
+        calc(1px + var(--dx)*.45) 0 color-mix(in srgb, var(--accent) 65%, transparent),
+        calc(-1px - var(--dx)*.45) 0 rgba(0,162,255,.55),
+        0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+    .glitchable.glitch-hit::before,
+    .glitchable.glitch-hit::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      opacity:.45; mix-blend-mode:screen; will-change:clip-path, transform;
+    }
+    .glitchable.glitch-hit::before{
+      border:1px solid rgba(0,162,255,.35);
+      transform: translate(calc(var(--gx,0) * -1), calc(var(--gy,0) * .6));
+      clip-path: polygon(0% var(--sliceY,40%), 100% var(--sliceY,40%), 100% calc(var(--sliceY,40%)+6px), 0% calc(var(--sliceY,40%)+6px));
+      box-shadow: 0 0 14px rgba(0,162,255,.28), 0 0 2px rgba(0,162,255,.7) inset;
+    }
+    .glitchable.glitch-hit::after{
+      border:1px solid rgba(255,64,64,.35);
+      transform: translate(var(--gx,0), calc(var(--gy,0) * -0.6));
+      clip-path: polygon(0% calc(var(--sliceY,65%) + 10px), 100% calc(var(--sliceY,65%) + 10px), 100% calc(var(--sliceY,65%) + 16px), 0% calc(var(--sliceY,65%) + 16px));
+      box-shadow: 0 0 14px rgba(255,64,64,.28), 0 0 2px rgba(255,64,64,.7) inset;
+    }
+    a.glitchable::before, a.glitchable::after{ display:none; }
+
+    /* Content */
+    .section{margin:24px 0; border:2px solid var(--wire); background:#0c0c0c; padding:16px}
+    .section h2{margin:0 0 10px; font-size:34px; color: var(--accent); position:relative; top:4px;}
+    .section p{margin:0; font-size:18px}
+    .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
+    .card{grid-column:span 6; position:relative; border:2px solid #242424; background:#0a0a0a; overflow:hidden}
+    .meta{position:absolute; inset:auto 0 0 0; padding:8px 10px; background:linear-gradient(to top, rgba(0,0,0,.8), transparent); font-size:16px}
+    .fluid{display:block; width:100%; aspect-ratio:16/9; border:0}
+
+    .collage{display:grid; grid-template-columns:repeat(12, 1fr); gap:10px; overflow:hidden;}
+    .snap{grid-column:span 4; position:relative; border:2px solid #2a2a2a; background:#0a0a0a; overflow:hidden; transform-origin:center;}
+    .snap img{display:block; width:100%; height:auto; object-fit:contain; filter:contrast(1.12) saturate(1.05)}
+    .snap:nth-child(3n){transform:rotate(-1deg)}
+    .snap:nth-child(4n){transform:rotate(1.2deg)}
+    .snap::after{content:'☻'; position:absolute; right:6px; top:6px; color:var(--accent); opacity:.8; position:absolute; transform:translateY(2px);}
+
+    .cap{
+      position:absolute; bottom:6px; left:8px; right:auto;
+      font-size:18px; line-height:1; color:var(--accent);
+      text-shadow:1px 1px 2px rgba(0,0,0,.85);
+      pointer-events:none; background:none; border:none; padding:0; letter-spacing:.5px;
+    }
+
+    .bts{display:grid; grid-template-columns:repeat(12,1fr); gap:10px; overflow:hidden;}
+    .clip{grid-column:span 6; position:relative; border:2px solid #2a2a2a; background:#0a0a0a; overflow:hidden; transform-origin:center;}
+    .clip:nth-child(3n){transform:rotate(-0.8deg)}
+    .clip:nth-child(4n){transform:rotate(1deg)}
+    .clip video{display:block; width:100%; height:100%; aspect-ratio:16/9; object-fit:cover; filter:contrast(1.08) saturate(1.05); background:#000;}
+    .clip::after{content:'☻'; position:absolute; right:6px; top:6px; color:var(--accent); opacity:.8; transform:translateY(2px);}
+
+    .toast{position:sticky; top:8px; z-index:6000; margin-bottom:8px; display:inline-block; padding:4px 10px; background:#0e0e0e; border:1px dashed #3a3a3a; color:var(--accent); font-size:16px; opacity:.95; border-radius:4px;}
+    .toast.hide{display:none;}
+
+    footer{opacity:.9; color:#bbb; font-size:14px; padding:28px 0}
+
+    /* ==== MAP STYLES ==== */
+    #usmap{border:2px solid var(--wire); background:#0a0a0a; padding:8px;}
+    #usmap svg{width:100%; height:auto; display:block;}
+
+    .state{
+      fill:#121212; stroke:#2a2a2a; stroke-width:1.05; /* a touch thicker base lines */
+      cursor:pointer; transition:fill .12s ease, stroke .12s ease;
+    }
+    .state.visited{ fill: var(--k-yellow) !important; stroke: var(--k-yellow) !important; }
+    .state.active{ fill: var(--k-yellow) !important; stroke: var(--k-yellow) !important; }
+    .state:hover{ fill: var(--k-yellow); stroke: var(--k-yellow); }
+
+    /* TEXAS SPECIAL — yellow w/ black ☻ pattern */
+    .state.tx-special{ fill: url(#txPattern) !important; stroke: #000 !important; }
+    .state.tx-special:hover,
+    .state.tx-special.active{ fill: url(#txPattern) !important; stroke: #000 !important; }
+
+    /* Permanently-yellow states get BLACK outline (keep TX pattern) */
+    .state.always{
+      fill: var(--k-yellow) !important;
+      stroke: #000 !important;
+      stroke-width: 1.6 !important;
+    }
+    .state.tx-special.always{ fill: url(#txPattern) !important; } /* keep Texas unique */
+    .state.always:hover,
+    .state.always.active{
+      fill: var(--k-yellow) !important;
+      stroke: #000 !important;
+    }
+
+    /* Thicker boundaries like before */
+    .state-outline{fill:none; stroke:var(--k-yellow); stroke-width:2.0; pointer-events:none;}
+    .nation-outline{fill:none; stroke:var(--k-yellow); stroke-width:2.2; pointer-events:none;}
+
+    .state-label{
+      font-family:VT323, monospace; font-size:12px; fill:#cfcfcf;
+      text-anchor:middle; dominant-baseline:middle; pointer-events:none;
+      paint-order:stroke; stroke:#0a0a0a; stroke-width:3px; stroke-linejoin:round;
+    }
+    .state-label.tx{
+      font-size:20px;  /* bigger but still inside */
+      stroke-width:3.5px;
+      font-weight:700;
+      letter-spacing:.5px;
+    }
+
+    /* Map + panel stacked */
+    .map-wrap{display:grid; grid-template-columns:1fr; gap:12px; align-items:start}
+    .panel{
+      border:2px solid var(--wire); background:#0a0a0a; padding:12px; min-height:120px;
+    }
+    .panel h3{margin:0 0 8px; color:var(--accent); font-size:24px; position:relative; top:4px;}
+    .panel h4{margin:10px 0 6px; color:var(--k-yellow); font-size:20px;}
+    .panel ul{margin:0 0 12px 0; padding-left:16px; font-size:18px}
+    .panel .empty{opacity:.8; color:#aaa; font-size:16px}
+
+    /* Bigger gallery under the map (natural aspect) */
+    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px}
+    .thumb{position:relative; border:2px solid var(--wire); overflow:hidden; background:#050505}
+    .thumb img{width:100%; height:auto; display:block; object-fit:contain; filter:contrast(1.08) saturate(1.05)}
+    .thumb .tcap{position:absolute; left:6px; bottom:6px; right:6px; font-size:14px; color:#ffbf02; text-shadow:1px 1px 2px #000}
+
+    /* Video grid inside panel */
+    .vgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:8px}
+    .vcard{position:relative; border:2px solid var(--wire); background:#0a0a0a; overflow:hidden}
+    .vcard iframe{display:block; width:100%; aspect-ratio:16/9; border:0}
+    .vmeta{position:absolute; inset:auto 0 0 0; padding:6px 8px; font-size:14px; background:linear-gradient(to top, rgba(0,0,0,.85), transparent)}
+
+    @media (max-width:980px){
+      .card{grid-column:span 12}
+      .snap{grid-column:span 6}
+      .clip{grid-column:span 12}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      .vgrid{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      .snap,.clip{grid-column:span 12}
+      .nav{grid-template-columns:1fr auto}
+      .logo{grid-column:1 / -1; order:-1; justify-self:center; font-size:48px;}
+      .right{align-items:flex-start}
+      .links a{margin-left:10px}
+      .vhs-remote{ margin-right:0 }
+      .rec-ticker .label{ font-size:18px }
+      .rec-ticker .tc{ font-size:22px }
+      .gallery{grid-template-columns:1fr}
+    }
+
+    @media print{ .vhs-remote{ display:none } }
+  </style>
+</head>
+<body>
+  <!-- Overlays -->
+  <div class="crt-cover" aria-hidden="true"></div>
+  <canvas id="tvStatic" class="tv-static" aria-hidden="true"></canvas>
+  <div class="vhs-flick" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap nav">
+      <div class="left">
+        <div class="rec-ticker" id="recTicker">
+          <span class="lamp"></span>
+          <span class="label">NOW FILMING</span>
+          <span class="tc" id="tc">00:00:00:00</span>
+        </div>
+      </div>
+
+      <div class="logo glitchable glitch-text" id="logo" data-glitch>KER☻SENE</div>
+
+      <div class="right">
+        <div class="vhs-remote" id="vhsRemote" role="group" aria-label="VHS Channel Switcher">
+          <h4>VHS — CHANNELS</h4>
+          <div class="vhs-grid">
+            <button class="vhs-btn" data-ch="1">CH 01</button>
+            <button class="vhs-btn" data-ch="2">CH 02</button>
+            <button class="vhs-btn" data-ch="3">CH 03</button>
+            <button class="vhs-btn" data-ch="4">CH 04</button>
+          </div>
+        </div>
+
+        <div class="links">
+          <a href="#videos" class="jit glitchable glitch-text" data-glitch>Interviews</a>
+          <a href="#music" class="jit glitchable glitch-text" data-glitch>Music Vide☻s</a>
+          <a href="#photos" class="jit glitchable glitch-text" data-glitch>Phot☻s</a>
+          <a href="#bts" class="jit glitchable glitch-text" data-glitch>Behind the Scenes</a>
+          <a href="#about" class="jit glitchable glitch-text" data-glitch>Ab☻ut</a>
+          <a href="#map" class="jit glitchable glitch-text" data-glitch>Map</a>
+          <a href="#contact" class="jit glitchable glitch-text" data-glitch>C☻ntact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="section glitchable" id="about" data-glitch>
+      <span class="tag glitchable glitch-text" data-glitch>VHS • GRIT • PUNK • HOU</span>
+      <h2 class="glitchable glitch-text" data-glitch>Wh☻ is KER☻SENE?</h2>
+      <p class="glitchable glitch-text" data-glitch>
+        KER☻SENE is a DIY film unit and archive out of Texas—documenting underground music and subculture through interviews, live shows, and raw portraits, all wrapped in a blown-out VHS aesthetic. On YouTube we capture the static and noise of punk, rap, and metal scenes, while Instagram serves as a spillover for concept art, edits, and scraps from the set. No polish, just grain, scanlines, and the muthafukin truth.
+      </p>
+    </section>
+
+    <section class="section glitchable" id="videos" data-glitch>
+      <h2 class="glitchable glitch-text" data-glitch>Interviews</h2>
+      <span id="ytSoundToast" class="toast">hover = play • click once to enable sound for YouTube</span>
+      <p style="margin-bottom:10px" class="glitchable glitch-text" data-glitch>
+        Full archive → <a href="https://www.youtube.com/@Kerosene.moneylaunderinginc" target="_blank" rel="noopener" class="glitchable glitch-text" data-glitch">@Keresene.m☻neylaunderinginc</a>
+      </p>
+      <div class="grid">
+        <!-- New interviews added -->
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/LFtTicgJCRQ?start=2&enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="Kamiyada+ — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>Kamiyada+ — Interview</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/Htp6NhP_LDQ?start=47&enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="FENTANYL — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>FENTANYL — Interview</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/RbKjvh7FQE8?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="GHOULAVELLI — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>GHOULAVELLI — Interview</div>
+        </div>
+
+        <!-- Existing interviews -->
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/Qkk3hImvUYE?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="TENKAY — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>TENKAY — Interview</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/wSy-j_SiTmU?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="I Set My Friends On Fire — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>I Set My Friends ☻n Fire — Interview</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/TMcDA3JznOs?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="Acid Souljah — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>Acid S☻uljah — Interview</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/r-TgdySSfrA?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="WHOKILLEDXIX — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>WHOKILLEDXIX — Interview</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/f43XRUx1rYo?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="Pentagram — Interview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text" data-glitch>Pentagram — Interview</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section glitchable" id="music" data-glitch>
+      <h2 class="glitchable glitch-text" data-glitch>Music Vide☻s</h2>
+      <div class="grid">
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/46C_6GpmIss?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="christ dillinger — mega xan" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text">christ dillinger — mega xan</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/rqEuBZK-oos?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="acid souljah — basedplugg" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text">acid souljah — basedplugg</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/4K5GCm3v-eg?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="BLUSHAKURX — american h77d psycho" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text">BLUSHAKURX — american h77d psycho</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/VzwoHVchkrU?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="killkody — bella" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text">killkody — bella</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/VLPhwRzou_s?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="undxfinedonline x gemtawk — bam!" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text">undxfinedonline x gemtawk — bam!</div>
+        </div>
+        <div class="card glitchable" data-glitch>
+          <iframe class="fluid glitchable yt-hover" src="https://www.youtube.com/embed/JVSt7WJSheE?enablejsapi=1&playsinline=1&rel=0&modestbranding=1" title="DOWURKDURK — horchata party" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="meta glitchable glitch-text">DOWURKDURK — horchata party</div>
+        </div>
+      </div>
+    </section>
+
+   <section class="section glitchable" id="photos" data-glitch>
+      <h2 class="glitchable glitch-text" data-glitch>Ph☻t☻ c☻llage</h2>
+      <div class="collage">
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/Blu%27s%20album%20cover%20inspo%20pic.jpg" alt="blushakurx" />
+          <div class="cap glitchable glitch-text">blushakurx</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/Dirtybutt%20rapping%20down%20into%20mic.JPG" alt="dirtybutt" />
+          <div class="cap glitchable glitch-text">dirtybutt</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/inkwhore%20flippin%20da%20bird.JPG" alt="inkwhore333" />
+          <div class="cap glitchable glitch-text">inkwhore333</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/killkody%20posted%20up%20w%3A%20gunz.jpg" alt="killkody" />
+          <div class="cap glitchable glitch-text">killkody</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/Mattox%20walking%20over.JPG" alt="matt ox" />
+          <div class="cap glitchable glitch-text">matt ox</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/Nascar%20aloe%20posing%20infront%20of%20smiley%20face.JPG" alt="nascar aloe" />
+          <div class="cap glitchable glitch-text">nascar aloe</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/stunts%20w%3A%20stink.JPG" alt="stink x cole warner" />
+          <div class="cap glitchable glitch-text">stink x cole warner</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/Tenkay%20posing%20w%3A%20Espolon.jpg" alt="tenkay" />
+          <div class="cap glitchable glitch-text">tenkay</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/Travis%20scott%20screen%20printing.jpg" alt="travis scott" />
+          <div class="cap glitchable glitch-text">travis scott</div>
+        </div>
+
+        <!-- ===== NEW PHOTOS ADDED ===== -->
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/LIL%20UGLYMANE%20IN%20AUSTIN.jpg" alt="LIL UGLYMANE" />
+          <div class="cap glitchable glitch-text">LIL UGLYMANE</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/BLACK%20SMURF%20IN%20SAN%20ANTONIO.jpg" alt="BLACK SMURF" />
+          <div class="cap glitchable glitch-text">BLACK SMURF</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/ALEXIS%20MUNROE%20X%20MOMO%20III.jpg" alt="ALEXIS MUNROE X MOMO III" />
+          <div class="cap glitchable glitch-text">ALEXIS MUNROE X MOMO III</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/MARK%20HEYLMUN%20OF%20SUICIDE%20SILENCE.jpg" alt="MARK HEYLMUN OF SUICIDE SILENCE" />
+          <div class="cap glitchable glitch-text">MARK HEYLMUN OF SUICIDE SILENCE</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/DJ%20PAUL.jpg" alt="DJ PAUL" />
+          <div class="cap glitchable glitch-text">DJ PAUL</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/RXKNEPHEW.jpg" alt="RXKNEPHEW" />
+          <div class="cap glitchable glitch-text">RXKNEPHEW</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/NASCAR%20ALOE.jpg" alt="NASCAR ALOE" />
+          <div class="cap glitchable glitch-text">NASCAR ALOE</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/ODDLY%20SHRUGS.jpg" alt="ODDLY SHRUGS" />
+          <div class="cap glitchable glitch-text">ODDLY SHRUGS</div>
+        </div>
+        <div class="snap glitchable" data-glitch>
+          <img loading="lazy" class="glitchable" src="images/MALICIOUS%20CHINA.jpg" alt="MALICIOUS CHINA" />
+          <div class="cap glitchable glitch-text">MALICIOUS CHINA</div>
+        </div>
+        <!-- ===== END NEW PHOTOS ===== -->
+      </div>
+    </section>
+
+    <!-- ======= US MAP SECTION ======= -->
+    <section class="section glitchable" id="map" data-glitch>
+      <h2 class="glitchable glitch-text" data-glitch>US W☻rk Map</h2>
+      <div class="map-wrap">
+        <div id="usmap" class="glitchable" data-glitch aria-label="US map of 50 states"></div>
+        <div class="panel">
+          <h3 id="stateTitle">Select a state</h3>
+          <ul id="stateList"></ul>
+          <div id="stateEmpty" class="empty">Coming s☻☻n</div>
+          <div id="stateVideos" class="vgrid"></div>
+          <div id="stateGallery" class="gallery"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section glitchable" id="bts" data-glitch>
+      <span id="soundToast" class="toast">hover = play • click once to enable sound</span>
+      <h2 class="glitchable glitch-text" data-glitch>Behind the Scenes</h2>
+      <div class="bts">
+        <div class="clip glitchable" data-glitch>
+          <video preload="auto" muted playsinline class="glitchable">
+            <source src="videos/based%20negative%20squad%20in%20austin.mp4" type="video/mp4">
+          </video>
+          <div class="cap glitchable glitch-text">based negative squad in austin</div>
+        </div>
+        <div class="clip glitchable" data-glitch>
+          <video preload="auto" muted playsinline class="glitchable">
+            <source src="videos/kill%20kody%20showing%20his%20music%20on%206th%20street%20in%20austin.mp4" type="video/mp4">
+          </video>
+          <div class="cap glitchable glitch-text">kill kody — showing his music on 6th street (austin)</div>
+        </div>
+        <div class="clip glitchable" data-glitch>
+          <video preload="auto" muted playsinline class="glitchable">
+            <source src="videos/og%20abi%20in%20new%20orleans.mp4" type="video/mp4">
+          </video>
+          <div class="cap glitchable glitch-text">og abi in new orleans</div>
+        </div>
+        <div class="clip glitchable" data-glitch>
+          <video preload="auto" muted playsinline class="glitchable">
+            <source src="videos/waffle%20house%20with%20inkwhore333.mp4" type="video/mp4">
+          </video>
+          <div class="cap glitchable glitch-text">waffle house with inkwhore333</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section glitchable" id="contact" data-glitch>
+      <h2 class="glitchable glitch-text" data-glitch>Get in t☻uch</h2>
+      <p class="glitchable glitch-text" data-glitch>
+        Instagram: <a href="https://instagram.com/___.kerosene.___" target="_blank" rel="noopener" class="glitchable glitch-text">@___.kerosene.___</a>
+        • YouTube: <a href="https://www.youtube.com/@Kerosene.moneylaunderinginc" target="_blank" rel="noopener" class="glitchable glitch-text">@Keresene.m☻neylaunderinginc</a><br>
+        Email: <a href="mailto:kerosene.c12h26.c15h32@gmail.com" class="glitchable glitch-text">keresene.c12h26.c15h32@gmail.c☻m</a>
+      </p>
+    </section>
+
+    <footer class="glitchable glitch-text">© <span id="year"></span> KER☻SENE — taped ☻ver, never c☻rp☻rate.</footer>
+  </main>
+
+  <!-- libs for the map -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <!-- YouTube API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script>
+    function computeDocH(){
+      return Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight
+      );
+    }
+    function setDocH(){
+      const h = computeDocH();
+      document.documentElement.style.setProperty('--doc-h', h + 'px');
+      const c = document.getElementById('tvStatic');
+      if(c){ c.style.width = innerWidth + 'px'; c.style.height = h + 'px'; }
+    }
+    setDocH();
+    addEventListener('resize', setDocH);
+    new MutationObserver(setDocH).observe(document.body, {subtree:true, childList:true});
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const root = document.documentElement;
+    addEventListener('mousemove', (e)=>{
+      const dx = (e.clientX / innerWidth - .5) * 4;
+      const dy = (e.clientY / innerHeight - .5) * 4;
+      root.style.setProperty('--dx', dx);
+      root.style.setProperty('--dy', dy);
+    });
+
+    (function replaceOs(){
+      const walk = (node)=>{
+        if(node.nodeType===3){
+          if(node.parentElement && ['SCRIPT','STYLE'].includes(node.parentElement.tagName)) return;
+          const txt = node.nodeValue;
+          if(/[oO]/.test(txt)){
+            const frag = document.createDocumentFragment();
+            txt.split(/(o|O)/).forEach(part=>{
+              if(part==='o' || part==='O'){
+                const span=document.createElement('span');
+                span.textContent='☻';
+                span.style.color=getComputedStyle(document.documentElement).getPropertyValue('--accent');
+                span.style.display='inline-block';
+                span.style.transform='translateY(0.12em)';
+                span.setAttribute('aria-hidden','true');
+                frag.appendChild(span);
+              }else{ frag.appendChild(document.createTextNode(part)) }
+            });
+            node.parentNode.replaceChild(frag,node);
+          }
+        }else if(node.nodeType===1){
+          if(node.tagName==='A') return Array.from(node.childNodes).forEach(walk);
+          Array.from(node.childNodes).forEach(walk);
+        }
+      };
+      walk(document.body);
+    })();
+
+    (function glitchify(){
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const targets = document.querySelectorAll(
+        '.glitchable, .logo, .links a, .snap, .snap img, .card, .card .fluid, .cap, .clip, .clip video'
+      );
+        const jitter = (el)=>{
+        el.style.setProperty('--gx', ((Math.random()*2-1)*1.8).toFixed(2)+'px');
+        el.style.setProperty('--gy', ((Math.random()*2-1)*1.8).toFixed(2)+'px');
+        el.style.setProperty('--gskew', (0.15 + Math.random()*0.4)+'deg');
+        el.style.setProperty('--ghue', (Math.random()*18-9)+'deg');
+        el.style.setProperty('--sliceY', (Math.floor(Math.random()*70)+10)+'%');
+        el.classList.add('glitch-hit');
+        clearTimeout(el._gto);
+        el._gto = setTimeout(()=> el.classList.remove('glitch-hit'), 160);
+      };
+      const onMove = (e)=>{
+        const el = e.currentTarget;
+        const now = performance.now();
+        if (el._last && now - el._last < 70) return;
+        el._last = now;
+        jitter(el);
+      };
+      targets.forEach(el=>{
+        el.classList.add('glitchable');
+        el.addEventListener('mouseenter', jitter);
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', ()=> el.classList.remove('glitch-hit'));
+      });
+    })();
+
+    (function prepVideos(){
+      let soundEnabled = false;
+      const toast = document.getElementById('soundToast');
+      const hideToast = ()=> toast && toast.classList.add('hide');
+
+      const enableSoundOnce = ()=>{
+        soundEnabled = true; hideToast();
+        document.removeEventListener('pointerdown', enableSoundOnce);
+        document.removeEventListener('keydown', enableSoundOnce);
+        document.removeEventListener('touchend', enableSoundOnce);
+      };
+      document.addEventListener('pointerdown', enableSoundOnce, {passive:true});
+      document.addEventListener('keydown', enableSoundOnce);
+      document.addEventListener('touchend', enableSoundOnce, {passive:true});
+
+      const clips = document.querySelectorAll('#bts .clip');
+      const showFirstFrame = (v)=>{
+        const snap = ()=>{ try{ v.currentTime = 0.05; }catch(e){} v.pause(); v.muted = true; };
+        if (v.readyState >= 2) snap();
+        else {
+          v.addEventListener('loadeddata', snap, {once:true});
+          v.addEventListener('loadedmetadata', ()=>{ try{ v.currentTime = 0.05; }catch(e){} }, {once:true});
+        }
+      };
+
+      clips.forEach(card=>{
+        const v = card.querySelector('video');
+        if(!v) return;
+        v.playsInline = true; v.preload = 'auto'; v.muted = true; showFirstFrame(v);
+
+        const startPlay = async ()=>{
+          try{ v.muted = !soundEnabled; await v.play(); }
+          catch{ try{ v.muted = true; await v.play(); }catch(_){} }
+        };
+        const stop = ()=>{
+          v.muted = true; v.pause(); try{ v.currentTime = 0.05; }catch(e){}
+        };
+
+        card.addEventListener('mouseenter', startPlay);
+        v.addEventListener('mouseenter', startPlay);
+        card.addEventListener('mouseleave', stop);
+        v.addEventListener('mouseleave', stop);
+
+        v.addEventListener('touchstart', ()=>{
+          if(!soundEnabled){ soundEnabled = true; hideToast(); }
+          if(v.paused){ v.muted = false; v.play().catch(()=>{}); } else { stop(); }
+        }, {passive:true});
+      });
+    })();
+
+    (function tvStatic(){
+      const canvas = document.getElementById('tvStatic');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d', {alpha:true});
+      const low = document.createElement('canvas');
+      const lw = 480, lh = 270;
+      low.width = lw; low.height = lh;
+      const lctx = low.getContext('2d');
+
+      function sizeCanvasBitmap(){
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        const cssWidth  = innerWidth;
+        const cssHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--doc-h')) || innerHeight;
+        const maxBitmapH = 1200;
+        canvas.width  = Math.floor(cssWidth * dpr);
+        canvas.height = Math.floor(Math.min(cssHeight, maxBitmapH) * dpr);
+        canvas.style.width  = cssWidth + 'px';
+        canvas.style.height = cssHeight + 'px';
+      }
+      sizeCanvasBitmap();
+      addEventListener('resize', sizeCanvasBitmap, {passive:true});
+
+      let last = 0;
+      const targetFPS = 24;
+      const minDelta = 1000/targetFPS;
+
+      function frame(t){
+        if (t - last >= minDelta){
+          last = t;
+          const img = lctx.createImageData(lw, lh);
+          const data = img.data;
+          for (let i=0; i<lw*lh; i++){
+            const n = Math.min(255, (Math.random()*230 + 18) | 0);
+            data[i*4+0] = n; data[i*4+1] = n; data[i*4+2] = n; data[i*4+3] = 42;
+          }
+          lctx.putImageData(img, 0, 0);
+
+          const canvasW = canvas.width, canvasH = canvas.height;
+          const scale = Math.max(canvasW/low.width, canvasH/low.height);
+          const w = low.width*scale, h = low.height*scale;
+          ctx.clearRect(0,0,canvasW,canvasH);
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(low, 0, 0, w, h);
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
+
+    (function vhsSwitch(){
+      const remote = document.getElementById('vhsRemote');
+      const btns = remote.querySelectorAll('.vhs-btn');
+
+      const channels = {
+        1: { h:'48deg',  s:'100%', l:'55%'  },
+        2: { h:'105deg', s:'95%',  l:'52%'  },
+        3: { h:'260deg', s:'85%',  l:'68%'  },
+        4: { loop:true,  s:'100%', l:'55%'  }
+      };
+
+      let hueTimer = null;
+      function stopHueLoop(){ if(hueTimer){ cancelAnimationFrame(hueTimer); hueTimer = null; } }
+      function startHueLoop(){
+        let h = 0, last = performance.now();
+        const tick = (t)=>{
+          const dt = t - last; last = t;
+          h = (h + dt * 0.03) % 360;
+          document.documentElement.style.setProperty('--ah', h.toFixed(1) + 'deg');
+          hueTimer = requestAnimationFrame(tick);
+        };
+        hueTimer = requestAnimationFrame(tick);
+      }
+
+      function applyChannel(n, flicker=true){
+        const ch = channels[n] || channels[1];
+        stopHueLoop();
+        if(ch.loop){
+          document.documentElement.style.setProperty('--as', ch.s);
+          document.documentElement.style.setProperty('--al', ch.l);
+          startHueLoop();
+        }else{
+          document.documentElement.style.setProperty('--ah', ch.h);
+          document.documentElement.style.setProperty('--as', ch.s);
+          document.documentElement.style.setProperty('--al', ch.l);
+        }
+        btns.forEach(b=> b.classList.toggle('active', +b.dataset.ch===+n));
+        try{ localStorage.setItem('vhsChannel', String(n)); }catch(_){}
+        if(flicker){
+          document.body.classList.add('switching');
+          clearTimeout(applyChannel._to);
+          applyChannel._to = setTimeout(()=> document.body.classList.remove('switching'), 260);
+        }
+      }
+
+      btns.forEach(b=> b.addEventListener('click', ()=> applyChannel(b.dataset.ch)));
+      document.addEventListener('keydown', (e)=>{
+        if(e.target && /input|textarea|select|button/i.test(e.target.tagName)) return;
+        if(['1','2','3','4'].includes(e.key)) applyChannel(+e.key);
+      });
+
+      const saved = +localStorage.getItem('vhsChannel') || 1;
+      applyChannel(saved, false);
+    })();
+
+    /* ======= NOW FILMING TIMER — AUDIO ONLY @ 00:10:00:00 ======= */
+    (function timecode(){
+      const el = document.getElementById('tc');
+      if(!el) return;
+
+      const FPS=24, MS_PER_FRAME=1000/FPS;
+      const EGG_MS = 10*60*1000; // 10 minutes
+      let start=performance.now(), last=start, acc=0, fired=false;
+
+      // Prepare audio (WAV with MP3 fallback)
+      const eggAudio = new Audio();
+      eggAudio.preload = 'auto';
+      eggAudio.src = 'audio/kerosene-website-audio.wav';
+      eggAudio.addEventListener('error', ()=>{
+        if(!eggAudio._triedMp3){
+          eggAudio._triedMp3 = true;
+          eggAudio.src = 'audio/kerosene-website-audio.mp3';
+          eggAudio.load();
+        }
+      });
+
+      // Basic gesture gate (no UI)
+      let soundEnabled = false;
+      const enableSound = ()=>{
+        soundEnabled = true;
+        document.removeEventListener('pointerdown', enableSound);
+        document.removeEventListener('keydown', enableSound);
+      };
+      document.addEventListener('pointerdown', enableSound, {once:true, passive:true});
+      document.addEventListener('keydown', enableSound, {once:true});
+
+      function pad(n){return (n<10?'0':'')+n}
+
+      function trigger(){
+        if(fired) return; fired = true;
+        try{
+          if(soundEnabled){ eggAudio.currentTime = 0; eggAudio.play().catch(()=>{}); }
+        }catch(_){}
+      }
+
+      function tick(t){
+        const dt=t-last; last=t; acc+=dt;
+        if(acc>=MS_PER_FRAME){
+          const elapsed=t-start;
+          const totalFrames=Math.floor(elapsed/MS_PER_FRAME);
+          const frames=totalFrames%FPS;
+          const s=Math.floor(totalFrames/FPS)%60;
+          const m=Math.floor(totalFrames/(FPS*60))%60;
+          const h=Math.floor(totalFrames/(FPS*3600));
+          el.textContent=`${pad(h)}:${pad(m)}:${pad(s)}:${pad(frames)}`;
+          acc%=MS_PER_FRAME;
+
+          if(!fired && elapsed >= EGG_MS){ trigger(); }
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+
+    /* ==== YOUTUBE HOVER-PLAY WITH SOUND AFTER GESTURE ==== */
+    let YT_READY = false;
+    const YT_PLAYERS = new Map();
+    let ytSoundEnabled = false;
+
+    (function initYTSoundGate(){
+      const ytToast = document.getElementById('ytSoundToast');
+      const hideYtToast = ()=> ytToast && ytToast.classList.add('hide');
+      const enable = ()=>{
+        ytSoundEnabled = true;
+        hideYtToast();
+        document.removeEventListener('pointerdown', enable);
+        document.removeEventListener('keydown', enable);
+        document.removeEventListener('touchend', enable);
+      };
+      document.addEventListener('pointerdown', enable, {passive:true});
+      document.addEventListener('keydown', enable);
+      document.addEventListener('touchend', enable, {passive:true});
+    })();
+
+    function onYouTubeIframeAPIReady(){
+      YT_READY = true;
+      initYouTubeHover();
+    }
+
+    function ensureIframeParams(url){
+      const u = new URL(url, location.href);
+      u.searchParams.set('enablejsapi','1');
+      u.searchParams.set('playsinline','1');
+      u.searchParams.set('rel','0');
+      u.searchParams.set('modestbranding','1');
+      return u.toString();
+    }
+
+    function initYouTubeHover(){
+      const iframes = document.querySelectorAll('#videos .yt-hover, #music .yt-hover, #map .yt-hover');
+      if(!iframes.length) return;
+
+      iframes.forEach((frame, idx)=>{
+        if(!frame.id) frame.id = 'ytp_' + idx + '_' + Math.random().toString(36).slice(2);
+        frame.src = ensureIframeParams(frame.src);
+
+        const player = new YT.Player(frame.id, {
+          events:{
+            'onReady': (e)=>{
+              try{ e.target.mute(); }catch(_){}
+              attachHoverHandlers(frame, e.target);
+            }
+          },
+          playerVars:{ autoplay:0, controls:1, rel:0, playsinline:1, modestbranding:1 }
+        });
+        YT_PLAYERS.set(frame, player);
+      });
+    }
+
+    function attachHoverHandlers(frame, player){
+      const card = frame.closest('.card, .vcard') || frame;
+
+      const play = ()=>{
+        try{
+          if(ytSoundEnabled){ player.unMute(); } else { player.mute(); }
+          player.playVideo();
+        }catch(_){}
+      };
+      const stop = ()=>{
+        try{ player.pauseVideo(); player.seekTo(0, true); }catch(_){}
+      };
+
+      card.addEventListener('mouseenter', play);
+      frame.addEventListener('mouseenter', play);
+      card.addEventListener('mouseleave', stop);
+      frame.addEventListener('mouseleave', stop);
+
+      card.addEventListener('touchstart', ()=>{
+        try{
+          const state = player.getPlayerState();
+          if(state !== 1){ if(ytSoundEnabled){ player.unMute(); } else { player.mute(); } player.playVideo(); }
+          else { player.pauseVideo(); }
+        }catch(_){}
+      }, {passive:true});
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      if(window.YT && window.YT.Player){ YT_READY = true; initYouTubeHover(); }
+    });
+  </script>
+
+  <!-- ========= US MAP (perma-yellow + black outline; TX has black-☻ pattern + bigger label) ========= -->
+  <script>
+  (function usMap(){
+    const el = document.getElementById('usmap');
+    if(!el) return;
+
+    const width = el.clientWidth || 900;
+    const height = Math.max(480, Math.round(width * 0.58));
+    const svg = d3.select(el).append('svg')
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('preserveAspectRatio','xMidYMid meet');
+
+    // defs for Texas pattern (yellow background + black ☻ grid)
+    const defs = svg.append('defs');
+    const txPat = defs.append('pattern')
+      .attr('id','txPattern')
+      .attr('patternUnits','userSpaceOnUse')
+      .attr('width',22)
+      .attr('height',22);
+    txPat.append('rect').attr('width',22).attr('height',22).attr('fill','#ffbf02');
+    [['6','14'],['16','8'],['11','20'],['2','3']].forEach(([x,y])=>{
+      txPat.append('text')
+        .attr('x',+x).attr('y',+y)
+        .attr('fill','#000')
+        .style('font-family','VT323, monospace')
+        .style('font-size','16px')
+        .text('☻');
+    });
+
+    // background click-catcher for clearing selection
+    const bg = svg.append('rect')
+      .attr('x',0).attr('y',0).attr('width',width).attr('height',height)
+      .attr('fill','transparent');
+
+    // order: states (bottom) -> outlines -> labels (TOP)
+    const gStates = svg.append('g');
+    const gOutlines = svg.append('g');
+    const gLabels = svg.append('g');
+
+    const STATE_INFO = {
+      "01":{name:'Alabama',abbr:'AL'}, "02":{name:'Alaska',abbr:'AK'}, "04":{name:'Arizona',abbr:'AZ'},
+      "05":{name:'Arkansas',abbr:'AR'}, "06":{name:'California',abbr:'CA'}, "08":{name:'Colorado',abbr:'CO'},
+      "09":{name:'Connecticut',abbr:'CT'}, "10":{name:'Delaware',abbr:'DE'}, "12":{name:'Florida',abbr:'FL'},
+      "13":{name:'Georgia',abbr:'GA'}, "15":{name:'Hawaii',abbr:'HI'}, "16":{name:'Idaho',abbr:'ID'},
+      "17":{name:'Illinois',abbr:'IL'}, "18":{name:'Indiana',abbr:'IN'}, "19":{name:'Iowa',abbr:'IA'},
+      "20":{name:'Kansas',abbr:'KS'}, "21":{name:'Kentucky',abbr:'KY'}, "22":{name:'Louisiana',abbr:'LA'},
+      "23":{name:'Maine',abbr:'ME'}, "24":{name:'Maryland',abbr:'MD'}, "25":{name:'Massachusetts',abbr:'MA'},
+      "26":{name:'Michigan',abbr:'MI'}, "27":{name:'Minnesota',abbr:'MN'}, "28":{name:'Mississippi',abbr:'MS'},
+      "29":{name:'Missouri',abbr:'MO'}, "30":{name:'Montana',abbr:'MT'}, "31":{name:'Nebraska',abbr:'NE'},
+      "32":{name:'Nevada',abbr:'NV'}, "33":{name:'New Hampshire',abbr:'NH'}, "34":{name:'New Jersey',abbr:'NJ'},
+      "35":{name:'New Mexico',abbr:'NM'}, "36":{name:'New York',abbr:'NY'}, "37":{name:'North Carolina',abbr:'NC'},
+      "38":{name:'North Dakota',abbr:'ND'}, "39":{name:'Ohio',abbr:'OH'}, "40":{name:'Oklahoma',abbr:'OK'},
+      "41":{name:'Oregon',abbr:'OR'}, "42":{name:'Pennsylvania',abbr:'PA'}, "44":{name:'Rhode Island',abbr:'RI'},
+      "45":{name:'South Carolina',abbr:'SC'}, "46":{name:'South Dakota',abbr:'SD'}, "47":{name:'Tennessee',abbr:'TN'},
+      "48":{name:'Texas',abbr:'TX'}, "49":{name:'Utah',abbr:'UT'}, "50":{name:'Vermont',abbr:'VT'},
+      "51":{name:'Virginia',abbr:'VA'}, "53":{name:'Washington',abbr:'WA'}, "54":{name:'West Virginia',abbr:'WV'},
+      "55":{name:'Wisconsin',abbr:'WI'}, "56":{name:'Wyoming',abbr:'WY'}
+    };
+
+    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us=>{
+      const states = topojson.feature(us, us.objects.states);
+      const nation = topojson.feature(us, us.objects.nation);
+
+      const projection = d3.geoAlbersUsa().fitSize([width, height], states);
+      const path = d3.geoPath(projection);
+
+      const features = states.features.filter(f => STATE_INFO[f.id]);
+
+      const VISITED_KEY = 'kerosene_usmap_visited';
+      const WORK_KEY = 'kerosene_usmap_work';
+
+      // ALWAYS-YELLOW w/ black outline (TX keeps pattern)
+      const ALWAYS_YELLOW = new Set(['AZ','NV','LA','CO','TX','NY']);
+
+      // Seed visited
+      let visited = {};
+      try{ visited = JSON.parse(localStorage.getItem(VISITED_KEY) || '{}'); }catch{}
+      ['LA','CO','TX','CA','NY','NV','AZ'].forEach(k=>{ if(!visited[k]) visited[k]=true; });
+      try{ localStorage.setItem(VISITED_KEY, JSON.stringify(visited)); }catch{}
+
+      let WORK_DATA = {};
+      try{ WORK_DATA = JSON.parse(localStorage.getItem(WORK_KEY) || '{}'); }catch{}
+
+      /* ---------- PRELOAD LOUISIANA, COLORADO ---------- */
+      if(!WORK_DATA['LA']){
+        WORK_DATA['LA'] = [
+          {label:'BLUSHAKURX — AMERICAN H77D PYCHO (Music Video) • New Orleans', url:'https://www.youtube.com/watch?v=4K5GCm3v-eg&list=RD4K5GCm3v-eg&start_radio=1'},
+          {label:'VAF — LEFTME4DEAD (Music Video) • New Orleans', url:'https://www.youtube.com/watch?v=cI0zs6BSxJU&start_radio=1'}
+        ];
+      }
+      if(!WORK_DATA['CO']){
+        WORK_DATA['CO'] = [
+          {label:'Acid Souljah — Interview • Colorado', url:'https://www.youtube.com/watch?v=TMcDA3JznOs'}
+        ];
+      }
+
+      /* ====== TEXAS DATA (sections; titles hidden for TX) ====== */
+      WORK_DATA['TX'] = [
+        {section:'MUSIC VIDEOS', items:[
+          {label:'BASEDPLUGG (Music Video)', url:'https://www.youtube.com/watch?v=rqEuBZK-oos'},
+          {label:'A Day In The Life (Music Video)', url:'https://www.youtube.com/watch?v=m81BAL7onhs'},
+          {label:'BELLA (Music Video)', url:'https://www.youtube.com/watch?v=VzwoHVchkrU'},
+          {label:'BAM! (Music Video)', url:'https://www.youtube.com/watch?v=VLPhwRzou_s'},
+          {label:'Horchata Party (Music Video)', url:'https://www.youtube.com/watch?v=JVSt7WJSheE'}
+        ]},
+        {section:'INTERVIEWS', items:[
+          {label:'WHOKILLEDXIX — Interview', url:'https://www.youtube.com/watch?v=r-TgdySSfrA'},
+          {label:'FENTANYL — Interview', url:'https://www.youtube.com/watch?v=Htp6NhP_LDQ&t=47s'},
+          {label:'I Set My Friends On Fire — Interview', url:'https://www.youtube.com/watch?v=wSy-j_SiTmU&t=5s'},
+          {label:'Pentagram — Interview', url:'https://www.youtube.com/watch?v=f43XRUx1rYo&t=308s'}
+        ]}
+      ];
+
+      /* ---------- CALIFORNIA ---------- */
+      WORK_DATA['CA'] = [
+        {label:'GHOULAVELLI — Interview', url:'https://www.youtube.com/watch?v=RbKjvh7FQE8&t=38s'},
+        {label:'AXELBLOODYAXEL — Interview', url:'https://www.youtube.com/watch?v=1tA0fXeEZgw'}
+      ];
+
+      /* ---------- NEW YORK (MEGAXAN) ---------- */
+      WORK_DATA['NY'] = [
+        {label:'CHRIST DILLINGER — MEGAXAN (Music Video)', url:'https://www.youtube.com/watch?v=46C_6GpmIss'}
+      ];
+
+      /* ---------- NEVADA (ComplexCon gallery only for now) ---------- */
+      if(!WORK_DATA['NV']) WORK_DATA['NV'] = []; // gallery handled below
+
+      try{ localStorage.setItem(WORK_KEY, JSON.stringify(WORK_DATA)); }catch{}
+
+      // STATES
+      gStates.selectAll('path.state')
+        .data(features)
+        .enter()
+        .append('path')
+        .attr('class', d => {
+          const ab = STATE_INFO[d.id].abbr;
+          const base = 'state' + (visited[ab] ? ' visited' : '');
+          const special = (ab === 'TX') ? ' tx-special' : '';
+          const always = (ALWAYS_YELLOW.has(ab) ? ' always' : '');
+          return base + special + always;
+        })
+        .attr('data-abbr', d => STATE_INFO[d.id].abbr)
+        .attr('d', path)
+        .on('click', (event, d)=>{
+          event.stopPropagation();
+          const abbr = STATE_INFO[d.id].abbr;
+          setActive(abbr);
+          showPanel(abbr);
+        })
+        .append('title')
+        .text(d => STATE_INFO[d.id].name);
+
+      // OUTLINES
+      gOutlines.append('path')
+        .attr('class','state-outline')
+        .attr('d', path(topojson.mesh(us, us.objects.states, (a,b)=>a!==b)));
+
+      gOutlines.append('path')
+        .attr('class','nation-outline')
+        .attr('d', path(nation));
+
+      // LABELS (TOP)
+      const labelSel = gLabels.selectAll('text.state-label')
+        .data(features)
+        .enter()
+        .append('text')
+        .attr('class', d => 'state-label' + (STATE_INFO[d.id].abbr==='TX' ? ' tx' : ''))
+        .attr('transform', d=>{
+          const c = path.centroid(d);
+          return `translate(${c[0]},${c[1]})`;
+        })
+        .text(d => STATE_INFO[d.id].abbr==='TX' ? 'TEXAS' : STATE_INFO[d.id].name);
+
+      // Selection management
+      const svgRoot = d3.select(el).select('svg');
+      let active = null;
+      function setActive(abbr){
+        active = abbr;
+        svgRoot.selectAll('path.state').classed('active', function(){
+          return d3.select(this).attr('data-abbr') === abbr;
+        });
+      }
+      // clicking background clears active highlight
+      bg.on('click', ()=>{
+        active = null;
+        svgRoot.selectAll('path.state').classed('active', false);
+      });
+
+      // PANEL
+      const titleEl = document.getElementById('stateTitle');
+      const listEl = document.getElementById('stateList');
+      const emptyEl = document.getElementById('stateEmpty');
+      const galEl = document.getElementById('stateGallery');
+      const vidsEl = document.getElementById('stateVideos');
+
+      function ytWatchToEmbed(url){
+        try{
+          const u = new URL(url);
+          const id = u.searchParams.get('v');
+          return id ? `https://www.youtube.com/embed/${id}` : url;
+        }catch(_){ return url; }
+      }
+
+      function addVideoCard(label, url){
+        const embed = ytWatchToEmbed(url);
+        const card = document.createElement('div');
+        card.className = 'vcard';
+        card.innerHTML = `<iframe class="yt-hover" src="${embed}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                          <div class="vmeta glitchable glitch-text">${label}</div>`;
+        vidsEl.appendChild(card);
+      }
+
+      function showPanel(abbr){
+        const entry = Object.values(STATE_INFO).find(s=>s.abbr===abbr);
+        const name = entry ? entry.name : abbr;
+        titleEl.textContent = `${name} (${abbr})`;
+
+        const items = WORK_DATA[abbr] || [];
+        listEl.innerHTML = '';
+        vidsEl.innerHTML = '';
+        emptyEl.style.display = items.length ? 'none' : '';
+
+        // Handle sectioned vs flat arrays
+        if(items.length && items[0] && items[0].section){
+          items.forEach(sec=>{
+            const ul = document.createElement('ul');
+            let hasLis = false;
+
+            (sec.items || []).forEach(it=>{
+              if(it.url && /youtube\.com\/watch/.test(it.url)){
+                addVideoCard(it.label, it.url);
+              }else{
+                const li = document.createElement('li');
+                li.textContent = it.label || it;
+                ul.appendChild(li);
+                hasLis = true;
+              }
+            });
+
+            if(abbr !== 'TX' && sec.section){
+              const h4 = document.createElement('h4');
+              h4.textContent = sec.section;
+              listEl.appendChild(h4);
+            }
+            if(hasLis){ listEl.appendChild(ul); }
+          });
+        }else if(items.length){
+          items.forEach(t=>{
+            const label = (typeof t === 'string') ? t : t.label;
+            const url = (typeof t === 'string') ? null : t.url;
+            if(url && /youtube\.com\/watch/.test(url)){
+              addVideoCard(label, url);
+            }else{
+              const li = document.createElement('li');
+              li.textContent = label;
+              listEl.appendChild(li);
+            }
+          });
+        }
+
+        // Gallery
+        galEl.innerHTML = '';
+        const GALLERY = {
+          'LA': [
+            {src:'images/states/louisiana/BLUSHAKURX VAF OG ABI AND 3RTHZ.jpg', title:'BLUSHAKURX VAF OG ABI AND 3RTHZ'},
+            {src:'images/states/louisiana/BLUSHAKURX NEW ORLEANS PERFORMANCE.jpg', title:'BLUSHAKURX NEW ORLEANS PERFORMANCE'},
+            {src:'images/states/louisiana/3RTHZ STEPPING ON YOU.jpg', title:'3RTHZ STEPPING ON YOU'},
+            {src:'images/states/louisiana/PORTRAIT OF VAF.jpg', title:'PORTRAIT OF VAF'}
+          ],
+          'CO': [],
+          'TX': [],
+          'CA': [
+            {src:'images/states/california/K3YAWNAA%20IN%20PANTS%20STYLED%20BY%20KEROSENE%20X%20TOTH660%201.jpg', title:'K3YAWNAA • Styled by KEROSENE x TOTH660 — 1'},
+            {src:'images/states/california/K3YAWNAA%20IN%20PANTS%20STYLED%20BY%20KEROSENE%20X%20TOTH660%202.jpg', title:'K3YAWNAA • Styled by KEROSENE x TOTH660 — 2'},
+            {src:'images/states/california/K3YAWNAA%20IN%20PANTS%20STYLED%20BY%20KEROSENE%20X%20TOTH660%203.jpg', title:'K3YAWNAA • Styled by KEROSENE x TOTH660 — 3'}
+          ],
+          'NY': [],
+          /* ===== NEVADA — ComplexCon gallery ===== */
+          'NV': [
+            {src:'images/states/nevada/BILLY RACXX.jpg', title:'BILLY RACXX'},
+            {src:'images/states/nevada/TRAVIS SCOTT AT COMPLEXCON.jpg', title:'Travis Scott — screen printing'},
+            {src:'images/states/nevada/THATS A AWFUL LOT OF COUGH SYRUP BOOTH AT COMPLEX CON.jpg', title:"That's A Awful Lot Of Cough Syrup — booth"},
+            {src:'images/states/nevada/COMPLEXCON ATENDEE 1.jpg', title:'ComplexCon attendee — gauntlets fit'},
+            {src:'images/states/nevada/FOUNDER OF THUG CLUB.jpg', title:'Founder of THUG CLUB'},
+            {src:'images/states/nevada/THUG CLUB MODELS.jpg', title:'THUG CLUB models'},
+            {src:'images/states/nevada/BAPE BOOTH AT COMPLEXCON.jpg', title:'BAPE booth + wrap'},
+            {src:'images/states/nevada/COMPLEXCON ATENDEE.jpg', title:'Attendees — street fit'},
+            {src:'images/states/nevada/LIL YACHTY AT COMPLEX CON.jpg', title:'Lil Yachty'}
+          ]
+        };
+        const pics = (GALLERY[abbr] || []);
+        if(pics.length){ emptyEl.style.display = 'none'; }
+        pics.forEach(p=>{
+          const wrap = document.createElement('div');
+          wrap.className = 'thumb';
+          wrap.innerHTML = `<img loading="lazy" src="${p.src}" alt="${p.title}"><div class="tcap">${p.title}</div>`;
+          galEl.appendChild(wrap);
+        });
+
+        // wire up hover for any new iframes
+        if(window.YT && window.YT.Player){ initYouTubeHover(); }
+      }
+
+      // === Hovering New York: open its panel + autoplay its first video (try with sound) ===
+      function playNYVideo(withSound=true){
+        setActive('NY');
+        showPanel('NY');
+
+        if(window.YT && window.YT.Player){ initYouTubeHover(); }
+        const frame = document.querySelector('#stateVideos .vcard iframe');
+        if(!frame) return;
+
+        let player = YT_PLAYERS.get(frame);
+        const start = (p)=>{
+          try{
+            if(withSound && window.ytSoundEnabled){ p.unMute(); } else { p.mute(); }
+            p.playVideo();
+          }catch(_){}
+        };
+
+        if(player){ start(player); }
+        else if(window.YT && window.YT.Player){
+          const id = frame.id || ('yt_ny_' + Math.random().toString(36).slice(2));
+          frame.id = id;
+          player = new YT.Player(id, {
+            events:{ onReady:(e)=> start(e.target) },
+            playerVars:{ autoplay:0, controls:1, rel:0, playsinline:1, modestbranding:1 }
+          });
+          YT_PLAYERS.set(frame, player);
+        }
+      }
+
+      // Bind the NY hover after paths exist
+      gStates.selectAll('path.state')
+        .filter(d => STATE_INFO[d.id].abbr === 'NY')
+        .on('mouseenter', ()=> playNYVideo(true));
+
+      // Default: select TX first (home), else LA, else CO
+      const defaultAbbr = visited['TX'] ? 'TX' : (visited['LA'] ? 'LA' : (visited['CO'] ? 'CO' : 'TX'));
+      setActive(defaultAbbr);
+      showPanel(defaultAbbr);
+
+      // RESIZE
+      addEventListener('resize', ()=>{
+        const w = el.clientWidth || 900;
+        const h = Math.max(480, Math.round(w * 0.58));
+        svg.attr('viewBox', `0 0 ${w} ${h}`);
+        bg.attr('width', w).attr('height', h);
+        projection.fitSize([w,h], states);
+        gStates.selectAll('path.state').attr('d', path);
+        gOutlines.selectAll('path.state-outline').attr('d', path(topojson.mesh(us, us.objects.states, (a,b)=>a!==b)));
+        gOutlines.selectAll('path.nation-outline').attr('d', path(nation));
+        labelSel.attr('transform', d=>{
+          const c = path.centroid(d);
+          return `translate(${c[0]},${c[1]})`;
+        });
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
+
